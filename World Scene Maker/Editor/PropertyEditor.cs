@@ -4,15 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace DS_PropertyEditor
 {
-    class PropertyEditor : ListView
+    class PropertyEditor : StackPanel
     {
         //Variables
         private const double PROPERTY_WIDTH = 350;
 
         //Constructor
+        public PropertyEditor()
+        {
+            this.Orientation = Orientation.Vertical;
+            this.Background = new SolidColorBrush(Colors.LightGray);
+        }
 
         //Properties
 
@@ -21,16 +27,16 @@ namespace DS_PropertyEditor
         {
             PropertyField<Type> propertyField = new PropertyField<Type>(pPropertyName, pValue, PROPERTY_WIDTH);
 
-            this.Items.Add(propertyField);
+            this.Children.Add(propertyField);
         }
 
         public PropertyField<Type> GetProperty<Type>(string pPropertyName) where Type : IConvertible
         {
-            for (int intC = 0; intC < this.Items.Count; intC++)
+            for (int intC = 0; intC < this.Children.Count; intC++)
             {
                 try
                 {
-                    PropertyField<Type> propertyField = (PropertyField<Type>)this.Items[intC];
+                    PropertyField<Type> propertyField = (PropertyField<Type>)this.Children[intC];
                     if (propertyField.Name == pPropertyName)
                     {
                         return propertyField;
@@ -42,14 +48,31 @@ namespace DS_PropertyEditor
             throw new UnknownPropertyException("Property \"" + pPropertyName + "\" does not exist.");
         }
 
-        /*
-        public Type GetPropertyValue<Type>(string pPropertyName) where Type : IConvertible
+        public Dictionary<string, Type> GetAllProperties()
         {
-            for (int intC = 0; intC < this.Items.Count; intC++)
+            Dictionary<string, Type> dicProperties = new Dictionary<string, Type>();
+
+            for (int intC = 0; intC < this.Children.Count; intC++)
             {
                 try
                 {
-                    PropertyField<Type> propertyField = (PropertyField<Type>)this.Items[intC];
+                    IPropertyEditorSearchable thisPropertyField = (IPropertyEditorSearchable)this.Children[intC];
+                    dicProperties.Add(thisPropertyField.Name, thisPropertyField.Type);
+                }
+                catch { }
+            }
+
+            return dicProperties;
+        }
+
+        /*
+        public Type GetPropertyValue<Type>(string pPropertyName) where Type : IConvertible
+        {
+            for (int intC = 0; intC < this.Children.Count; intC++)
+            {
+                try
+                {
+                    PropertyField<Type> propertyField = (PropertyField<Type>)this.Children[intC];
                     if (propertyField.Name == pPropertyName)
                     {
                         return propertyField.Value;
@@ -62,11 +85,11 @@ namespace DS_PropertyEditor
         }
         public void SetPropertyValue<Type>(string pPropertyName,Type pValue) where Type : IConvertible
         {
-            for (int intC = 0; intC < this.Items.Count; intC++)
+            for (int intC = 0; intC < this.Children.Count; intC++)
             {
                 try
                 {
-                    PropertyField<Type> propertyField = (PropertyField<Type>)this.Items[intC];
+                    PropertyField<Type> propertyField = (PropertyField<Type>)this.Children[intC];
                     if (propertyField.Name == pPropertyName)
                     {
                         propertyField.Value = pValue;

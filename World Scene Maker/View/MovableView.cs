@@ -55,8 +55,7 @@ namespace World_Scene_Maker
         {
             SetPosition(dblXOffset, dblYOffset);
         }
-
-
+        
         private void GrabScene(object sender, MouseButtonEventArgs e)
         {
             blnGrabbed = true;

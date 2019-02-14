@@ -48,9 +48,11 @@ namespace World_Scene_Maker
             //Elements in map view
             Image image = new Image();
             image.Source = new BitmapImage(new Uri("D:/Users/Gebruiker/Desktop/Backgrounds/Cow1.jpg"));
-            view.Children.Add(image);
+            view.Scene.Children.Add(image);
 
             propertyEditor.GetProperty<string>("Name").Value = "Wolla";
+
+            Dictionary<String,Type> arrAll = propertyEditor.GetAllProperties();
         }
     }
 }

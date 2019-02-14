@@ -40,15 +40,7 @@ namespace World_Scene_Maker
                 return scene;
             }
         }
-
-        public new UIElementCollection Children
-        {
-            get
-            {
-                return scene.Children;
-            }
-        }
-
+        
         public double Scale
         {
             get
