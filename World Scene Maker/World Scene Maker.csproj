@@ -57,13 +57,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Editor\IPropertyField.cs" />
+    <Compile Include="Editor\Interfaces\IPropertyField.cs" />
     <Compile Include="Editor\PropertyEditor.cs" />
     <Compile Include="Editor\PropertyField.cs" />
     <Compile Include="Editor\PropertyField_Boolean.cs" />
     <Compile Include="Editor\PropertyField_Enum.cs" />
     <Compile Include="Editor\PropertyField_Default.cs" />
-    <Compile Include="Editor\UnknownPropertyException.cs" />
+    <Compile Include="Editor\Exceptions\PropertyExceptions.cs" />
     <Compile Include="View\MovableView.cs" />
     <Compile Include="View\View.cs" />
     <Page Include="MainWindow.xaml">
@@ -97,6 +97,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="UML.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

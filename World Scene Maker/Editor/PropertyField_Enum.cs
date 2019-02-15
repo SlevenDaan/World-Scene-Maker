@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace DS_PropertyEditor
 {
@@ -25,9 +18,11 @@ namespace DS_PropertyEditor
             {
                 throw new ArgumentException("ValueType must be an enumerated type");
             }
+
             //valuebox
+            cbxValue.Width = pWidth - (STACKPANEL_LEFT_MARGIN * 2) - NAMEBOX_WIDTH - SCROLLWHEEL_WIDTH;
+
             cbxValue.SelectionChanged += EnterStopEdit;
-            cbxValue.LostFocus += LoseFocus;
 
             foreach(ValueType value in Enum.GetValues(typeof(ValueType)))
             {
@@ -52,15 +47,16 @@ namespace DS_PropertyEditor
         }
 
         //Methods
-        private void LoseFocus(object sender, RoutedEventArgs e)
+        private void UpdateValue()
         {
             ComboBoxItem item = (ComboBoxItem)cbxValue.SelectedItem;
             Value = (ValueType)Enum.Parse(typeof(ValueType), item.Content.ToString());
             UpdateGraphics();
         }
+
         private void EnterStopEdit(object sender, SelectionChangedEventArgs e)
         {
-            LoseFocus(sender, null);
+            UpdateValue();
         }
 
         //Events

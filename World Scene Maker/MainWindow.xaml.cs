@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using DS_PropertyEditor;
 
 namespace World_Scene_Maker
@@ -26,6 +18,8 @@ namespace World_Scene_Maker
             True,False,None
         }
 
+        PropertyEditor propertyEditor;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -37,7 +31,7 @@ namespace World_Scene_Maker
             grdMain.Children.Add(view);
 
             //propertyEditor
-            PropertyEditor propertyEditor = new PropertyEditor();
+            propertyEditor = new PropertyEditor();
             propertyEditor.AddProperty<bool>("bool", true);
             propertyEditor.AddProperty<byte>("byte", 1);
             propertyEditor.AddProperty<char>("char", 'h');
@@ -55,9 +49,21 @@ namespace World_Scene_Maker
             image.Source = new BitmapImage(new Uri("D:/Users/Gebruiker/Desktop/Backgrounds/Cow1.jpg"));
             view.Scene.Children.Add(image);
 
+            //Propertyeditor
             propertyEditor.GetProperty<bool>("bool").Value = false;
 
-            Dictionary<String,Type> arrAll = propertyEditor.GetAllProperties();
+            propertyEditor.ValueChanged += PropertyEditor_ValueChanged;
+
+            Dictionary<string, Type> arrAll = propertyEditor.GetAllProperties();
+
+            propertyEditor.RemoveProperty("Sbyte");
+        }
+
+        private void PropertyEditor_ValueChanged(PropertyEditor propertyEditor)
+        {
+            Dictionary<String, Type> arrAll = propertyEditor.GetAllProperties();
+            TestEnum testEnum = propertyEditor.GetProperty<TestEnum>("enum").Value;
+            bool testBool = propertyEditor.GetProperty<bool>("bool").Value;
         }
     }
 }

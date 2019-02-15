@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="FullSignature">
+  <Class Name="World_Scene_Maker.MovableView" Collapsed="true">
+    <Position X="16" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QACAAAIAAAAAAAAIAAAAAAAAEBAABAAABACAAADAADA=</HashCode>
+      <FileName>View\MovableView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="World_Scene_Maker.View" Collapsed="true">
+    <Position X="16" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAgAIAAIAAAAAIAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\View.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DS_PropertyEditor.PropertyField&lt;ValueType&gt;">
+    <Position X="0.5" Y="0.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAEAIAABAAAAAAYgAEIAAAAAAQAgAAABAAA=</HashCode>
+      <FileName>Editor\PropertyField.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DS_PropertyEditor.PropertyField_Boolean">
+    <Position X="10.5" Y="5.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAKACAACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Editor\PropertyField_Boolean.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DS_PropertyEditor.PropertyField_Default&lt;ValueType&gt;">
+    <Position X="0.5" Y="5.75" Width="5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAQAKAAAACAQAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Editor\PropertyField_Default.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DS_PropertyEditor.PropertyField_Enum&lt;ValueType&gt;">
+    <Position X="5.75" Y="5.75" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAEAAAKAAAACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Editor\PropertyField_Enum.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="DS_PropertyEditor.IPropertyField">
+    <Position X="5.5" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Editor\Interfaces\IPropertyField.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DS_PropertyEditor.IPropertyField&lt;ValueType&gt;">
+    <Position X="5.5" Y="3.25" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Editor\Interfaces\IPropertyField.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Delegate Name="DS_PropertyEditor.OnPropertyFieldValueChange&lt;EventType&gt;" Collapsed="true">
+    <Position X="5.5" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Editor\Interfaces\IPropertyField.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

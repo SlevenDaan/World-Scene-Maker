@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace DS_PropertyEditor
 {
@@ -18,7 +12,7 @@ namespace DS_PropertyEditor
         protected const double STACKPANEL_TOP_MARGING = 2;
 
         //Variables
-        private OnValueChange<ValueType> onValueChange;
+        private OnPropertyFieldValueChange<ValueType> onValueChange;
 
         private TextBlock tbcName = new TextBlock();
 
@@ -36,13 +30,6 @@ namespace DS_PropertyEditor
             this.Focusable = false;
             this.Margin = new Thickness(0, STACKPANEL_TOP_MARGING, 0, STACKPANEL_TOP_MARGING);
             this.ToolTip = " ValueType : " + typeof(ValueType).Name;
-            if (typeof(ValueType).IsEnum)
-            {
-                foreach (ValueType pEnum in Enum.GetValues(typeof(ValueType)))
-                {
-                    this.ToolTip += "\n   " + pEnum;
-                }
-            }
 
             //namebox
             tbcName.Width = NAMEBOX_WIDTH;
@@ -102,7 +89,7 @@ namespace DS_PropertyEditor
         //Methods
 
         //Events
-        public event OnValueChange<ValueType> ValueChanged
+        public event OnPropertyFieldValueChange<ValueType> ValueChanged
         {
             add
             {

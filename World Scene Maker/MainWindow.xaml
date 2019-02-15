@@ -7,9 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900">
     <Grid x:Name="grdMain">
-        <ScrollViewer x:Name="scvHierarchy" Background="Blue" Margin="0,0,0,0" Width="350" Height="250" HorizontalAlignment="Right" VerticalAlignment="Top" VerticalScrollBarVisibility="Auto">
-            
-        </ScrollViewer>
+        <ScrollViewer x:Name="scvHierarchy" Background="Blue" Margin="0,0,0,0" Width="350" Height="250" HorizontalAlignment="Right" VerticalAlignment="Top" VerticalScrollBarVisibility="Auto"/>
         <ScrollViewer x:Name="scvEditor" Background="Yellow" Margin="0,250,0,0" Width="350" HorizontalAlignment="Right" VerticalScrollBarVisibility="Auto">
             
         </ScrollViewer>

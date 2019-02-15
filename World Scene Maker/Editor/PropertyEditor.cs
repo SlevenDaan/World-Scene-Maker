@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -13,6 +10,11 @@ namespace DS_PropertyEditor
     {
         //Variables
         private const double PROPERTY_WIDTH = 350;
+
+        public delegate void OnPropertyEditorValueChange(PropertyEditor propertyEditor);
+        private OnPropertyEditorValueChange onValueChange;
+
+        private Dictionary<string, IPropertyField> dicEditorFields = new Dictionary<string, IPropertyField>();
 
         //Constructor
         public PropertyEditor()
@@ -24,113 +26,101 @@ namespace DS_PropertyEditor
         //Properties
 
         //Functions
-        public void AddProperty<Type>(string pPropertyName, Type pValue) where Type : IConvertible
+        public void AddProperty<ValueType>(string pPropertyName, ValueType pValue) where ValueType : IConvertible
         {
-            if (typeof(Type) == typeof(bool))
+            if (!dicEditorFields.ContainsKey(pPropertyName))
             {
-                PropertyField_Boolean PropertyField = new PropertyField_Boolean(pPropertyName, (bool)((IConvertible)pValue), PROPERTY_WIDTH);
-                this.Children.Add(PropertyField);
-            }
-            else if (typeof(Type).IsEnum)
-            {
-                PropertyField_Enum<Type> PropertyField = new PropertyField_Enum<Type>(pPropertyName, pValue, PROPERTY_WIDTH);
-                this.Children.Add(PropertyField);
+                IPropertyField iPropertyField = null;
+
+                if (typeof(ValueType) == typeof(bool))
+                {
+                    PropertyField_Boolean PropertyField = new PropertyField_Boolean(pPropertyName, (bool)((IConvertible)pValue), PROPERTY_WIDTH);
+                    PropertyField.ValueChanged += this.PropertyFieldValueChanged;
+                    this.Children.Add(PropertyField);
+                    iPropertyField = PropertyField;
+                }
+                else if (typeof(ValueType).IsEnum)
+                {
+                    PropertyField_Enum<ValueType> PropertyField = new PropertyField_Enum<ValueType>(pPropertyName, pValue, PROPERTY_WIDTH);
+                    PropertyField.ValueChanged += this.PropertyFieldValueChanged;
+                    this.Children.Add(PropertyField);
+                    iPropertyField = PropertyField;
+                }
+                else
+                {
+                    PropertyField_Default<ValueType> PropertyField = new PropertyField_Default<ValueType>(pPropertyName, pValue, PROPERTY_WIDTH);
+                    PropertyField.ValueChanged += this.PropertyFieldValueChanged;
+                    this.Children.Add(PropertyField);
+                    iPropertyField = PropertyField;
+                }
+
+                dicEditorFields.Add(pPropertyName, iPropertyField);
             }
             else
             {
-                PropertyField_Default<Type> PropertyField = new PropertyField_Default<Type>(pPropertyName, pValue, PROPERTY_WIDTH);
-                this.Children.Add(PropertyField);
+                throw new DuplicatePropertyException("Property \"" + pPropertyName + "\" already exist.");
             }
         }
-        public void RemoveProperty<Type>(string pPropertyName) where Type : IConvertible
+        public void RemoveProperty(string pPropertyName)
         {
-            for (int intC = 0; intC < this.Children.Count; intC++)
+            if (dicEditorFields.ContainsKey(pPropertyName))
             {
-                try
-                {
-                    PropertyField_Default<Type> PropertyField = (PropertyField_Default<Type>)this.Children[intC];
-                    if (PropertyField.Name == pPropertyName)
-                    {
-                        this.Children.RemoveAt(intC);
-                    }
-                }
-                catch { }
+                this.Children.Remove((UIElement)dicEditorFields[pPropertyName]);
+                dicEditorFields.Remove(pPropertyName);
             }
-
-            throw new UnknownPropertyException("Property \"" + pPropertyName + "\" does not exist.");
-        }
-
-        public IPropertyField<Type> GetProperty<Type>(string pPropertyName) where Type : IConvertible
-        {
-            for (int intC = 0; intC < this.Children.Count; intC++)
+            else
             {
-                try
-                {
-                    IPropertyField<Type> PropertyField = (IPropertyField<Type>)this.Children[intC];
-                    if (PropertyField.Name == pPropertyName)
-                    {
-                        return PropertyField;
-                    }
-                }
-                catch { }
+                throw new UnknownPropertyException("Property \"" + pPropertyName + "\" does not exist.");
             }
-
-            throw new UnknownPropertyException("Property \"" + pPropertyName + "\" does not exist.");
         }
         
+        public bool PropertyExists(string pPropertyName)
+        {
+            return dicEditorFields.ContainsKey(pPropertyName);
+        }
+
+        public IPropertyField<ValueType> GetProperty<ValueType>(string pPropertyName) where ValueType : IConvertible
+        {
+            if (dicEditorFields.ContainsKey(pPropertyName))
+            {
+                return (IPropertyField<ValueType>)dicEditorFields[pPropertyName];
+            }
+            else
+            {
+                throw new UnknownPropertyException("Property \"" + pPropertyName + "\" does not exist.");
+            }
+        }
         public Dictionary<string, Type> GetAllProperties()
         {
-            Dictionary<string, Type> dicProperties = new Dictionary<string, Type>();
-
-            for (int intC = 0; intC < this.Children.Count; intC++)
+            Dictionary<string, Type> dicReturn = new Dictionary<string, Type>();
+            foreach(string key in dicEditorFields.Keys)
             {
-                try
-                {
-                    IPropertyField PropertyField = (IPropertyField)this.Children[intC];
-                    dicProperties.Add(PropertyField.Name, PropertyField.Type);
-                }
-                catch { }
+                dicReturn.Add(key, dicEditorFields[key].Type);
             }
-
-            return dicProperties;
+            return dicReturn;
         }
 
-        /*
-        public Type GetPropertyValue<Type>(string pPropertyName) where Type : IConvertible
+        //Methods
+        private void PropertyFieldValueChanged<ValueType>(IPropertyField<ValueType> pPropertyField) where ValueType : IConvertible
         {
-            for (int intC = 0; intC < this.Children.Count; intC++)
+            if (onValueChange != null)
             {
-                try
-                {
-                    PropertyField_Default<Type> PropertyField_Default = (PropertyField_Default<Type>)this.Children[intC];
-                    if (PropertyField_Default.Name == pPropertyName)
-                    {
-                        return PropertyField_Default.Value;
-                    }
-                }
-                catch { }
+                onValueChange(this);
             }
-
-            throw new UnknownPropertyException("Property \"" + pPropertyName + "\" does not exist.");
         }
-        public void SetPropertyValue<Type>(string pPropertyName,Type pValue) where Type : IConvertible
+
+        //Events
+        public event OnPropertyEditorValueChange ValueChanged
         {
-            for (int intC = 0; intC < this.Children.Count; intC++)
+            add
             {
-                try
-                {
-                    PropertyField_Default<Type> PropertyField_Default = (PropertyField_Default<Type>)this.Children[intC];
-                    if (PropertyField_Default.Name == pPropertyName)
-                    {
-                        PropertyField_Default.Value = pValue;
-                        return;
-                    }
-                }
-                catch { }
+                onValueChange += value;
             }
-
-            throw new UnknownPropertyException("Property \""+pPropertyName+"\" does not exist.");
+            remove
+            {
+                onValueChange -= value;
+            }
         }
-        */
+
     }
 }

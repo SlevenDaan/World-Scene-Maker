@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace DS_PropertyEditor
 {
@@ -23,9 +18,13 @@ namespace DS_PropertyEditor
         {
             //valuebox
             tbxValue.Width = pWidth - (STACKPANEL_LEFT_MARGIN * 2) - NAMEBOX_WIDTH - SCROLLWHEEL_WIDTH;
+
             tbxValue.KeyUp += EnterStopEdit;
             tbxValue.LostFocus += LoseFocus;
+            tbxValue.LostKeyboardFocus += LoseFocus;
+
             tbxValue.GotKeyboardFocus += GetKeyboardFocus;
+
             this.Children.Add(tbxValue);
         }
         
@@ -42,7 +41,7 @@ namespace DS_PropertyEditor
         }
 
         //Methods
-        private void LoseFocus(object sender, RoutedEventArgs e)
+        private void UpdateValue()
         {
             try
             {
@@ -65,14 +64,20 @@ namespace DS_PropertyEditor
             }
             UpdateGraphics();
         }
+
+        private void LoseFocus(object sender, RoutedEventArgs e)
+        {
+            UpdateValue();
+        }
         private void EnterStopEdit(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                LoseFocus(sender, null);
-                GetKeyboardFocus(sender, null);
+                UpdateValue();
+                tbxValue.Select(tbxValue.Text.Length, 0);
             }
         }
+
         private void GetKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             tbxValue.Select(tbxValue.Text.Length, 0);
