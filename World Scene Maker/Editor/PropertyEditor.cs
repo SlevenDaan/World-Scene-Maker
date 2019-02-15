@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -23,23 +24,34 @@ namespace DS_PropertyEditor
         //Properties
 
         //Functions
-        public void AddProperty<Type> (string pPropertyName, Type pValue) where Type:IConvertible
+        public void AddProperty<Type>(string pPropertyName, Type pValue) where Type : IConvertible
         {
-            PropertyField<Type> propertyField = new PropertyField<Type>(pPropertyName, pValue, PROPERTY_WIDTH);
-
-            this.Children.Add(propertyField);
+            if (typeof(Type) == typeof(bool))
+            {
+                PropertyField_Boolean PropertyField = new PropertyField_Boolean(pPropertyName, (bool)((IConvertible)pValue), PROPERTY_WIDTH);
+                this.Children.Add(PropertyField);
+            }
+            else if (typeof(Type).IsEnum)
+            {
+                PropertyField_Enum<Type> PropertyField = new PropertyField_Enum<Type>(pPropertyName, pValue, PROPERTY_WIDTH);
+                this.Children.Add(PropertyField);
+            }
+            else
+            {
+                PropertyField_Default<Type> PropertyField = new PropertyField_Default<Type>(pPropertyName, pValue, PROPERTY_WIDTH);
+                this.Children.Add(PropertyField);
+            }
         }
-
-        public PropertyField<Type> GetProperty<Type>(string pPropertyName) where Type : IConvertible
+        public void RemoveProperty<Type>(string pPropertyName) where Type : IConvertible
         {
             for (int intC = 0; intC < this.Children.Count; intC++)
             {
                 try
                 {
-                    PropertyField<Type> propertyField = (PropertyField<Type>)this.Children[intC];
-                    if (propertyField.Name == pPropertyName)
+                    PropertyField_Default<Type> PropertyField = (PropertyField_Default<Type>)this.Children[intC];
+                    if (PropertyField.Name == pPropertyName)
                     {
-                        return propertyField;
+                        this.Children.RemoveAt(intC);
                     }
                 }
                 catch { }
@@ -48,6 +60,24 @@ namespace DS_PropertyEditor
             throw new UnknownPropertyException("Property \"" + pPropertyName + "\" does not exist.");
         }
 
+        public IPropertyField<Type> GetProperty<Type>(string pPropertyName) where Type : IConvertible
+        {
+            for (int intC = 0; intC < this.Children.Count; intC++)
+            {
+                try
+                {
+                    IPropertyField<Type> PropertyField = (IPropertyField<Type>)this.Children[intC];
+                    if (PropertyField.Name == pPropertyName)
+                    {
+                        return PropertyField;
+                    }
+                }
+                catch { }
+            }
+
+            throw new UnknownPropertyException("Property \"" + pPropertyName + "\" does not exist.");
+        }
+        
         public Dictionary<string, Type> GetAllProperties()
         {
             Dictionary<string, Type> dicProperties = new Dictionary<string, Type>();
@@ -56,8 +86,8 @@ namespace DS_PropertyEditor
             {
                 try
                 {
-                    IPropertyEditorSearchable thisPropertyField = (IPropertyEditorSearchable)this.Children[intC];
-                    dicProperties.Add(thisPropertyField.Name, thisPropertyField.Type);
+                    IPropertyField PropertyField = (IPropertyField)this.Children[intC];
+                    dicProperties.Add(PropertyField.Name, PropertyField.Type);
                 }
                 catch { }
             }
@@ -72,10 +102,10 @@ namespace DS_PropertyEditor
             {
                 try
                 {
-                    PropertyField<Type> propertyField = (PropertyField<Type>)this.Children[intC];
-                    if (propertyField.Name == pPropertyName)
+                    PropertyField_Default<Type> PropertyField_Default = (PropertyField_Default<Type>)this.Children[intC];
+                    if (PropertyField_Default.Name == pPropertyName)
                     {
-                        return propertyField.Value;
+                        return PropertyField_Default.Value;
                     }
                 }
                 catch { }
@@ -89,10 +119,10 @@ namespace DS_PropertyEditor
             {
                 try
                 {
-                    PropertyField<Type> propertyField = (PropertyField<Type>)this.Children[intC];
-                    if (propertyField.Name == pPropertyName)
+                    PropertyField_Default<Type> PropertyField_Default = (PropertyField_Default<Type>)this.Children[intC];
+                    if (PropertyField_Default.Name == pPropertyName)
                     {
-                        propertyField.Value = pValue;
+                        PropertyField_Default.Value = pValue;
                         return;
                     }
                 }

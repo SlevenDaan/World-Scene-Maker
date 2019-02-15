@@ -58,12 +58,18 @@ namespace World_Scene_Maker
         
         private void GrabScene(object sender, MouseButtonEventArgs e)
         {
-            blnGrabbed = true;
-            pntLastGrabbedPoint = e.GetPosition(this);
+            if (e.MiddleButton == MouseButtonState.Pressed)
+            {
+                blnGrabbed = true;
+                pntLastGrabbedPoint = e.GetPosition(this);
+            }
         }
         private void ReleaseScene(object sender, MouseButtonEventArgs e)
         {
-            blnGrabbed = false;
+            if (e.MiddleButton == MouseButtonState.Released)
+            {
+                blnGrabbed = false;
+            }
         }
         private void LoseScene(object sender, MouseEventArgs e)
         {

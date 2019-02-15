@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace DS_PropertyEditor
 {
-    interface IPropertyEditorSearchable
+    delegate void OnValueChange<EventType>(IPropertyField<EventType> pPropertyField_Default) where EventType : IConvertible;
+
+    interface IPropertyField
     {
         string Name
         {
@@ -16,5 +18,15 @@ namespace DS_PropertyEditor
         {
             get;
         }
+    }
+
+    interface IPropertyField<ValueType> : IPropertyField where ValueType : IConvertible
+    {
+        ValueType Value
+        {
+            get;
+            set;
+        }
+        event OnValueChange<ValueType> ValueChanged;
     }
 }

@@ -10,19 +10,17 @@ using System.Windows.Media;
 
 namespace DS_PropertyEditor
 {
-    class PropertyField<ValueType> : StackPanel, IPropertyEditorSearchable where ValueType : IConvertible
+    class PropertyField<ValueType> : StackPanel, IPropertyField<ValueType> where ValueType : IConvertible
     {
         //Constants
-        private const double NAMEBOX_WIDTH = 75;
-        private const double STACKPANEL_LEFT_MARGIN = 10;
-        private const double STACKPANEL_TOP_MARGING = 2;
+        protected const double NAMEBOX_WIDTH = 75;
+        protected const double STACKPANEL_LEFT_MARGIN = 10;
+        protected const double STACKPANEL_TOP_MARGING = 2;
 
         //Variables
-        public delegate void OnValueChange(PropertyField<ValueType> pPropertyField);
-        private OnValueChange onValueChange;
+        private OnValueChange<ValueType> onValueChange;
 
         private TextBlock tbcName = new TextBlock();
-        private TextBox tbxValue = new TextBox();
 
         private string strName;
         private ValueType objValue;
@@ -52,17 +50,8 @@ namespace DS_PropertyEditor
             this.Children.Add(tbcName);
 
             //valuebox
-            tbxValue.Width = pWidth - (STACKPANEL_LEFT_MARGIN * 2) - NAMEBOX_WIDTH;
-            tbxValue.KeyUp += EnterStopEdit;
-            tbxValue.LostFocus += LoseFocus;
-            this.Children.Add(tbxValue);
         }
-
-        public PropertyField(string pName, ValueType pValue, double pWidth, string pTooltip) : this(pName, pValue, pWidth)
-        {
-            tbcName.ToolTip = pTooltip;
-        }
-
+        
         //Properties
         public new string Name
         {
@@ -104,64 +93,16 @@ namespace DS_PropertyEditor
             }
         }
 
-        private TextBlock NameBox
+        //Functions
+        public virtual void UpdateGraphics()
         {
-            get
-            {
-                return tbcName;
-            }
-        }
-        private TextBox ValueBox
-        {
-            get
-            {
-                return tbxValue;
-            }
+            tbcName.Text = strName.ToString();
         }
 
-        //Function
-        private void UpdateGraphics()
-        {
-            tbcName.Text = strName;
-            if (objValue != null)
-            {
-                tbxValue.Text = objValue.ToString();
-            }
-        }
-
-        private void LoseFocus(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                ValueType pValue;
-                if (typeof(ValueType).IsEnum)
-                {
-                    pValue = (ValueType)Enum.Parse(typeof(ValueType), tbxValue.Text);
-                }
-                else
-                {
-                    pValue = (ValueType)Convert.ChangeType(tbxValue.Text, typeof(ValueType));
-                }
-
-                Value = pValue;
-            }
-            catch
-            {
-                tbxValue.SelectionStart = tbxValue.Text.Length;
-                tbxValue.SelectionLength = 0;
-            }
-            UpdateGraphics();
-        }
-        private void EnterStopEdit(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                LoseFocus(sender, null);
-            }
-        }
+        //Methods
 
         //Events
-        public event OnValueChange ValueChanged
+        public event OnValueChange<ValueType> ValueChanged
         {
             add
             {

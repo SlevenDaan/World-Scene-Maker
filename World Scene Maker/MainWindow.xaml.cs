@@ -38,11 +38,16 @@ namespace World_Scene_Maker
 
             //propertyEditor
             PropertyEditor propertyEditor = new PropertyEditor();
-            propertyEditor.AddProperty<string>("Name","");
-            propertyEditor.AddProperty<double>("Double",0.0);
-            propertyEditor.AddProperty<int>("Int", 0);
-            propertyEditor.AddProperty<TestEnum>("Enum", 0);
-            propertyEditor.AddProperty<DateTime>("Datetime", new DateTime());
+            propertyEditor.AddProperty<bool>("bool", true);
+            propertyEditor.AddProperty<byte>("byte", 1);
+            propertyEditor.AddProperty<char>("char", 'h');
+            propertyEditor.AddProperty<DateTime>("datetime", new DateTime());
+            propertyEditor.AddProperty<double>("double", 15.1789);
+            propertyEditor.AddProperty<TestEnum>("enum", TestEnum.None);
+            propertyEditor.AddProperty<int>("int", 898);
+            propertyEditor.AddProperty<sbyte>("Sbyte", -25);
+            propertyEditor.AddProperty<float>("float", 0.171451f);
+            propertyEditor.AddProperty<UInt32>("Uint", 1787919);
             scvEditor.Content = propertyEditor;
 
             //Elements in map view
@@ -50,7 +55,7 @@ namespace World_Scene_Maker
             image.Source = new BitmapImage(new Uri("D:/Users/Gebruiker/Desktop/Backgrounds/Cow1.jpg"));
             view.Scene.Children.Add(image);
 
-            propertyEditor.GetProperty<string>("Name").Value = "Wolla";
+            propertyEditor.GetProperty<bool>("bool").Value = false;
 
             Dictionary<String,Type> arrAll = propertyEditor.GetAllProperties();
         }
