@@ -60,6 +60,7 @@
     <Compile Include="Editor\Interfaces\IPropertyField.cs" />
     <Compile Include="Editor\PropertyEditor.cs" />
     <Compile Include="Editor\PropertyField.cs" />
+    <Compile Include="Editor\PropertyField_DateTime.cs" />
     <Compile Include="Editor\PropertyField_Boolean.cs" />
     <Compile Include="Editor\PropertyField_Enum.cs" />
     <Compile Include="Editor\PropertyField_Default.cs" />

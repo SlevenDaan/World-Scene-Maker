@@ -14,6 +14,9 @@ namespace DS_PropertyEditor
         {
             get;
         }
+
+        //Called on initialize and when propertyeditor changes size
+        void SetWidth(double pWidth);
     }
 
     interface IPropertyField<ValueType> : IPropertyField where ValueType : IConvertible

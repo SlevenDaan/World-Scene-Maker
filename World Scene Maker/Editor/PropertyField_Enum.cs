@@ -6,7 +6,6 @@ namespace DS_PropertyEditor
     class PropertyField_Enum<ValueType> : PropertyField<ValueType>, IPropertyField<ValueType> where ValueType : IConvertible
     {
         //Constants
-        private const double SCROLLWHEEL_WIDTH = 10;
 
         //Variables
         private ComboBox cbxValue = new ComboBox();
@@ -20,14 +19,14 @@ namespace DS_PropertyEditor
             }
 
             //valuebox
-            cbxValue.Width = pWidth - (STACKPANEL_LEFT_MARGIN * 2) - NAMEBOX_WIDTH - SCROLLWHEEL_WIDTH;
-
             cbxValue.SelectionChanged += EnterStopEdit;
 
             foreach(ValueType value in Enum.GetValues(typeof(ValueType)))
             {
-                ComboBoxItem comboBoxItem = new ComboBoxItem();
-                comboBoxItem.Content = value.ToString();
+                ComboBoxItem comboBoxItem = new ComboBoxItem
+                {
+                    Content = value.ToString()
+                };
                 cbxValue.Items.Add(comboBoxItem);
             }
 
@@ -44,6 +43,12 @@ namespace DS_PropertyEditor
             {
                 cbxValue.SelectedIndex = (int)(IConvertible)Value;
             }
+        }
+
+        public override void SetWidth(double pWidth)
+        {
+            cbxValue.Width = CalculateValueBoxWidth(pWidth);
+            base.SetWidth(pWidth);
         }
 
         //Methods

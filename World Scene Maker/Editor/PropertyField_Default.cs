@@ -8,7 +8,6 @@ namespace DS_PropertyEditor
     class PropertyField_Default<ValueType> : PropertyField<ValueType>, IPropertyField<ValueType> where ValueType : IConvertible
     {
         //Constants
-        private const double SCROLLWHEEL_WIDTH = 10;
 
         //Variables
         private TextBox tbxValue = new TextBox();
@@ -17,8 +16,6 @@ namespace DS_PropertyEditor
         public PropertyField_Default(string pName, ValueType pValue, double pWidth) : base(pName, pValue, pWidth)
         {
             //valuebox
-            tbxValue.Width = pWidth - (STACKPANEL_LEFT_MARGIN * 2) - NAMEBOX_WIDTH - SCROLLWHEEL_WIDTH;
-
             tbxValue.KeyUp += EnterStopEdit;
             tbxValue.LostFocus += LoseFocus;
             tbxValue.LostKeyboardFocus += LoseFocus;
@@ -38,6 +35,12 @@ namespace DS_PropertyEditor
             {
                 tbxValue.Text = Value.ToString();
             }
+        }
+
+        public override void SetWidth(double pWidth)
+        {
+            tbxValue.Width = CalculateValueBoxWidth(pWidth);
+            base.SetWidth(pWidth);
         }
 
         //Methods

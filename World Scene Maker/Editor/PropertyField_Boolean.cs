@@ -6,7 +6,6 @@ namespace DS_PropertyEditor
     class PropertyField_Boolean : PropertyField<bool>, IPropertyField<bool>
     {
         //Constants
-        private const double SCROLLWHEEL_WIDTH = 10;
 
         //Variables
         private CheckBox cbxValue = new CheckBox();
@@ -15,10 +14,9 @@ namespace DS_PropertyEditor
         public PropertyField_Boolean(string pName, bool pValue, double pWidth) : base(pName, pValue, pWidth)
         {
             //valuebox
-            cbxValue.Width = pWidth - (STACKPANEL_LEFT_MARGIN * 2) - NAMEBOX_WIDTH - SCROLLWHEEL_WIDTH;
-
             cbxValue.Checked += Checked;
             cbxValue.Unchecked += Checked;
+            cbxValue.KeyDown += PressedEnter;
 
             this.Children.Add(cbxValue);
         }
@@ -32,6 +30,12 @@ namespace DS_PropertyEditor
             cbxValue.IsChecked = (bool)Value;
         }
 
+        public override void SetWidth(double pWidth)
+        {
+            cbxValue.Width = CalculateValueBoxWidth(pWidth);
+            base.SetWidth(pWidth);
+        }
+
         //Methods
         private void UpdateValue()
         {
@@ -42,6 +46,14 @@ namespace DS_PropertyEditor
         private void Checked(object sender, RoutedEventArgs e)
         {
             UpdateValue();
+        }
+
+        private void PressedEnter(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                cbxValue.IsChecked = !Value;
+            }
         }
 
         //Events

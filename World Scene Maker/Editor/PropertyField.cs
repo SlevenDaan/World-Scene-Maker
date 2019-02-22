@@ -7,9 +7,10 @@ namespace DS_PropertyEditor
     class PropertyField<ValueType> : StackPanel, IPropertyField<ValueType> where ValueType : IConvertible
     {
         //Constants
-        protected const double NAMEBOX_WIDTH = 75;
-        protected const double STACKPANEL_LEFT_MARGIN = 10;
-        protected const double STACKPANEL_TOP_MARGING = 2;
+        public const double NAMEBOX_WIDTH = 75;
+        public const double STACKPANEL_LEFT_MARGIN = 10;
+        public const double STACKPANEL_TOP_MARGING = 2;
+        public const double VALUEBOX_MIN_WIDTH = 50;
 
         //Variables
         private OnPropertyFieldValueChange<ValueType> onValueChange;
@@ -26,17 +27,13 @@ namespace DS_PropertyEditor
             Value = pValue;
 
             //this
+            this.SetWidth(pWidth);
             this.Orientation = Orientation.Horizontal;
             this.Focusable = false;
-            this.Margin = new Thickness(0, STACKPANEL_TOP_MARGING, 0, STACKPANEL_TOP_MARGING);
             this.ToolTip = " ValueType : " + typeof(ValueType).Name;
 
             //namebox
-            tbcName.Width = NAMEBOX_WIDTH;
-            tbcName.Margin = new Thickness(STACKPANEL_LEFT_MARGIN, 0, 0, 0);
             this.Children.Add(tbcName);
-
-            //valuebox
         }
         
         //Properties
@@ -86,7 +83,23 @@ namespace DS_PropertyEditor
             tbcName.Text = strName.ToString();
         }
 
-        //Methods
+        public virtual void SetWidth(double pWidth)
+        {
+            this.Margin = new Thickness(0, STACKPANEL_TOP_MARGING, 0, STACKPANEL_TOP_MARGING);
+            
+            tbcName.Width = NAMEBOX_WIDTH;
+            tbcName.Margin = new Thickness(STACKPANEL_LEFT_MARGIN, 0, 0, 0);
+        }
+        
+        protected double CalculateValueBoxWidth(double pWidth)
+        {
+            pWidth = pWidth - (STACKPANEL_LEFT_MARGIN * 2) - NAMEBOX_WIDTH;
+            if (pWidth < VALUEBOX_MIN_WIDTH)
+            {
+                pWidth = VALUEBOX_MIN_WIDTH;
+            }
+            return pWidth;
+        }
 
         //Events
         public event OnPropertyFieldValueChange<ValueType> ValueChanged

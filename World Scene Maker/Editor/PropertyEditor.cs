@@ -6,10 +6,13 @@ using System.Windows.Media;
 
 namespace DS_PropertyEditor
 {
+    /// <summary>
+    /// An object that makes it possible to easily add/remove properties and change their values.
+    /// </summary>
     class PropertyEditor : StackPanel
     {
         //Variables
-        private const double PROPERTY_WIDTH = 350;
+        private const double PROPERTY_MIN_WIDTH = PropertyField<string>.NAMEBOX_WIDTH + PropertyField<string>.VALUEBOX_MIN_WIDTH + 2 * PropertyField<string>.STACKPANEL_LEFT_MARGIN;
 
         public delegate void OnPropertyEditorValueChange(PropertyEditor propertyEditor);
         private OnPropertyEditorValueChange onValueChange;
@@ -19,8 +22,10 @@ namespace DS_PropertyEditor
         //Constructor
         public PropertyEditor()
         {
+            this.Width = CalculateWidth();
             this.Orientation = Orientation.Vertical;
             this.Background = new SolidColorBrush(Colors.LightGray);
+            this.SizeChanged += PropertyEditorSizeChanged;
         }
 
         //Properties
@@ -34,21 +39,28 @@ namespace DS_PropertyEditor
 
                 if (typeof(ValueType) == typeof(bool))
                 {
-                    PropertyField_Boolean PropertyField = new PropertyField_Boolean(pPropertyName, (bool)((IConvertible)pValue), PROPERTY_WIDTH);
+                    PropertyField_Boolean PropertyField = new PropertyField_Boolean(pPropertyName, (bool)((IConvertible)pValue), CalculateWidth());
+                    PropertyField.ValueChanged += this.PropertyFieldValueChanged;
+                    this.Children.Add(PropertyField);
+                    iPropertyField = PropertyField;
+                }
+                else if (typeof(ValueType) == typeof(DateTime))
+                {
+                    PropertyField_DateTime PropertyField = new PropertyField_DateTime(pPropertyName, (DateTime)((IConvertible)pValue), CalculateWidth());
                     PropertyField.ValueChanged += this.PropertyFieldValueChanged;
                     this.Children.Add(PropertyField);
                     iPropertyField = PropertyField;
                 }
                 else if (typeof(ValueType).IsEnum)
                 {
-                    PropertyField_Enum<ValueType> PropertyField = new PropertyField_Enum<ValueType>(pPropertyName, pValue, PROPERTY_WIDTH);
+                    PropertyField_Enum<ValueType> PropertyField = new PropertyField_Enum<ValueType>(pPropertyName, pValue, CalculateWidth());
                     PropertyField.ValueChanged += this.PropertyFieldValueChanged;
                     this.Children.Add(PropertyField);
                     iPropertyField = PropertyField;
                 }
                 else
                 {
-                    PropertyField_Default<ValueType> PropertyField = new PropertyField_Default<ValueType>(pPropertyName, pValue, PROPERTY_WIDTH);
+                    PropertyField_Default<ValueType> PropertyField = new PropertyField_Default<ValueType>(pPropertyName, pValue, CalculateWidth());
                     PropertyField.ValueChanged += this.PropertyFieldValueChanged;
                     this.Children.Add(PropertyField);
                     iPropertyField = PropertyField;
@@ -99,7 +111,7 @@ namespace DS_PropertyEditor
             }
             return dicReturn;
         }
-
+        
         //Methods
         private void PropertyFieldValueChanged<ValueType>(IPropertyField<ValueType> pPropertyField) where ValueType : IConvertible
         {
@@ -107,6 +119,26 @@ namespace DS_PropertyEditor
             {
                 onValueChange(this);
             }
+        }
+
+        private void PropertyEditorSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            //Correct width of all properties
+            this.Width = CalculateWidth();
+            foreach (string key in dicEditorFields.Keys)
+            {
+                dicEditorFields[key].SetWidth(this.Width);
+            }
+        }
+
+        private double CalculateWidth()
+        { 
+            if (this.ActualWidth < PROPERTY_MIN_WIDTH)
+            {
+                return PROPERTY_MIN_WIDTH;
+            }
+            return this.ActualWidth;
+
         }
 
         //Events
