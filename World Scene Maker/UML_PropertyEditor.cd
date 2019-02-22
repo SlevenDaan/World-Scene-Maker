@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="FullSignature">
+  <Class Name="DS_PropertyEditor.PropertyField&lt;ValueType&gt;">
+    <Position X="10.5" Y="0.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAFAIAABBAAAAAYgAEIAAAAAAQAgAAABAAQ=</HashCode>
+      <FileName>Editor\PropertyField.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DS_PropertyEditor.PropertyField_Boolean">
+    <Position X="9.25" Y="6.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAKACAAAAAAAAAAAAAAEAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Editor\PropertyField_Boolean.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DS_PropertyEditor.PropertyField_Default&lt;ValueType&gt;">
+    <Position X="4" Y="6.25" Width="5" />
+    <InheritanceLine Type="DS_PropertyEditor.PropertyField&lt;ValueType&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="12.625" Y="5.136" />
+        <Point X="12.625" Y="5.875" />
+        <Point X="6.125" Y="5.875" />
+        <Point X="6.125" Y="6.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAQAKAAAAAAQAAIAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Editor\PropertyField_Default.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DS_PropertyEditor.PropertyField_Enum&lt;ValueType&gt;">
+    <Position X="13.75" Y="6.25" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAEAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Editor\PropertyField_Enum.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DS_PropertyEditor.PropertyField_DateTime">
+    <Position X="18.5" Y="6.25" Width="5" />
+    <InheritanceLine Type="DS_PropertyEditor.PropertyField&lt;ValueType&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="12.625" Y="5.136" />
+        <Point X="12.625" Y="5.875" />
+        <Point X="21.062" Y="5.875" />
+        <Point X="21.062" Y="6.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAgAQ=</HashCode>
+      <FileName>Editor\PropertyField_DateTime.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DS_PropertyEditor.UnknownPropertyException">
+    <Position X="0.5" Y="2" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Editor\Exceptions\PropertyExceptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DS_PropertyEditor.DuplicatePropertyException">
+    <Position X="0.5" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Editor\Exceptions\PropertyExceptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DS_PropertyEditor.PropertyEditor">
+    <Position X="4" Y="0.5" Width="6" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="DS_PropertyEditor.PropertyEditor.OnPropertyEditorValueChange">
+        <TypeIdentifier>
+          <NewMemberFileName>Editor\PropertyEditor.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>EAAIAAAABAAAAAAAAAAQIAAAAEAAAAAYBBAAACAAAAA=</HashCode>
+      <FileName>Editor\PropertyEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="DS_PropertyEditor.IPropertyField">
+    <Position X="15" Y="0.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAQAAAAAAAAQ=</HashCode>
+      <FileName>Editor\Interfaces\IPropertyField.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DS_PropertyEditor.IPropertyField&lt;ValueType&gt;">
+    <Position X="15" Y="2.25" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Editor\Interfaces\IPropertyField.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Delegate Name="DS_PropertyEditor.OnPropertyFieldValueChange&lt;EventType&gt;">
+    <Position X="15" Y="4" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Editor\Interfaces\IPropertyField.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
