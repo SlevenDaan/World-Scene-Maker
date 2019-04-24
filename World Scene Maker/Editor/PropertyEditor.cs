@@ -73,6 +73,14 @@ namespace DS_PropertyEditor
                 throw new DuplicatePropertyException("Property \"" + pPropertyName + "\" already exist.");
             }
         }
+
+        public void RemoveProperties(params string[] pPropertyNames)
+        {
+            foreach(string name in pPropertyNames)
+            {
+                RemoveProperty(name);
+            }
+        }
         public void RemoveProperty(string pPropertyName)
         {
             if (dicEditorFields.ContainsKey(pPropertyName))
